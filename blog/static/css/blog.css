@@ -32,7 +32,7 @@ h4 {
 }
 
 .date {
-    color: #828282
+    color: #828282;
 }
 
 .save {
@@ -62,8 +62,8 @@ h4 {
     color: #000000;
 }
 
-.post>.date,
-.post>.actions {
+.post > .date,
+.post > .actions {
     float: right;
 }
 
