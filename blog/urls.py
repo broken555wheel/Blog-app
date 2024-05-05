@@ -10,4 +10,5 @@ urlpatterns = [
     path('post/<pk>/publish/', views.post_publish, name='post_publish'),
     path('post/<pk>/remove/', views.post_remove,name='post_remove'),
     path('accounts/logout/', views.custom_logout_view, name='logout'),
+    path('post/<int:pk>/comment/', views.add_comment_to_post, name='add_comment_to_post'),
 ]
