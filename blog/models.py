@@ -32,7 +32,7 @@ class Comment(models.Model):
 
 
     def approve(self):
-        self.apprived_comment = True
+        self.approved_comment = True
         self.save()
 
     

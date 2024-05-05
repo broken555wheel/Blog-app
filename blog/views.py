@@ -73,7 +73,7 @@ def custom_logout_view(request):
     
 
 def add_comment_to_post(request,pk):
-    post = get_object_or_404(Post, pk-pk)
+    post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
