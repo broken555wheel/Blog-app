@@ -1,3 +1,4 @@
+from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404
 from .models import Post, Comment
 from django.utils import timezone
@@ -6,9 +7,13 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
-def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'blog/post_list.html', {'posts':posts})
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
 
 
 def post_detail(request, pk):
