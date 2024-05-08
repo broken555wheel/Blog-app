@@ -9,9 +9,8 @@ urlpatterns = [
     path('drafts/', views.PostDraftList.as_view(), name='post_draft_list'),
     path('post/<pk>/publish/', views.PostPublishView.as_view(), name='post_publish'),
     path('post/<pk>/remove/', views.PostRemoveView.as_view(),name='post_remove'),
+    path('post/<int:pk>/comment/', views.AddCommentToPostView.as_view(), name='add_comment_to_post'),
+    path('comment/<int:pk>/approve/', views.CommentApproveView.as_view(), name='comment_approve'),
+    path('comment/<int:pk>/remove/', views.CommentRemoveView.as_view(), name='comment_remove'),
     path('accounts/logout/', views.custom_logout_view, name='logout'),
-    path('post/<int:pk>/comment/', views.add_comment_to_post, name='add_comment_to_post'),
-    path('comment/<int:pk>/approve/', views.comment_approve, name='comment_approve'),
-    path('comment/<int:pk>/remove/', views.comment_remove, name='comment_remove'),
-
 ]
