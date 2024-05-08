@@ -1,7 +1,7 @@
 from typing import Any
 from django.db.models.query import QuerySet
-from django.urls import reverse
-from django.views.generic import ListView, DetailView,CreateView, UpdateView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView,CreateView, UpdateView, DeleteView, View 
 from django.shortcuts import render, get_object_or_404
 from .models import Post, Comment
 from django.utils import timezone
@@ -63,26 +63,29 @@ class PostDraftList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Post.objects.filter(published_date__isnull=True).order_by('created_date')
     
-
-@login_required
-def post_draft_list(request):
-    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
-    return render(request, 'blog/post_draft_list.html', {'posts':posts})
+class PostPublishView(LoginRequiredMixin, View):
 
 
+    def get(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        post.publish()
+        return redirect('post_detail', pk=pk)
+    
+    
 @login_required
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.publish()
     return redirect('post_detail', pk=pk)
-
-
-@login_required
-def post_remove(request, pk):
-    post=get_object_or_404(Post, pk=pk)
-    post.delete()
-    return redirect('post_list')
-
+   
+class PostRemoveView(LoginRequiredMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('post_list')
+    def delete(self):
+        post = self.get_object()
+        post.delete()
+        return redirect(self.get_success_url())
+    
 
 def custom_logout_view(request):
     if request.method == 'GET':
@@ -108,7 +111,7 @@ def add_comment_to_post(request,pk):
 def comment_approve(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.approve()
-    return redirect('post_detail', pk=comment.post.pk)
+    return redirect('lpost_detail', pk=comment.post.pk)
 
 
 @login_required
